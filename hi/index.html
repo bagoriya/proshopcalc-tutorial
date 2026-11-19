@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pro Shop Calculator वीडियो ट्यूटोरियल (हिन्दी)</title>
+<meta name="description" content="Pro Shop Calculator का हिन्दी वीडियो ट्यूटोरियल: मात्रा × दर, विवरण, New, Open, More, सेटिंग्स, GST/PDF और Crypt।">
+<style>
+  :root { --bg:#fbf8f4; --fg:#211a14; --card:#fff; --accent:#e8590c; --muted:#6a5c50; --line:#ecdfd1; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#14100d; --fg:#fff6ee; --card:#1e1813; --accent:#ffa24a; --muted:#cdbba9; --line:#3b2f27; } }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"Noto Sans Devanagari","Nirmala UI",system-ui,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--fg); }
+  header { padding:20px 16px 8px; max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+  h1 { margin:0 0 4px; font-size:1.6rem; }
+  header p { margin:0; color:var(--muted); }
+  .lang { padding:6px 14px; border:1px solid var(--line); border-radius:999px; color:var(--fg); text-decoration:none; background:var(--card); }
+  main { max-width:1100px; margin:0 auto; padding:8px 16px 40px; display:grid; grid-template-columns:minmax(260px,380px) 1fr; gap:24px; align-items:start; }
+  @media (max-width:760px) { main { grid-template-columns:1fr; } .stage { position:static !important; } }
+  .stage { position:sticky; top:12px; }
+  video { width:100%; max-height:80vh; background:#000; border-radius:16px; display:block; }
+  .controls { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  button { font:inherit; border:1px solid var(--line); background:var(--card); color:var(--fg); padding:10px 16px; border-radius:10px; cursor:pointer; min-height:44px; }
+  button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .now { margin-top:10px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 14px; font-weight:600; }
+  ol.chapters { list-style:none; margin:0; padding:0; display:grid; gap:14px; }
+  .chapter { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 16px; cursor:pointer; overflow:hidden; }
+  .chapter.active { outline:2px solid var(--accent); }
+  .chapter h2 { margin:0 0 6px; font-size:1.1rem; display:flex; gap:10px; align-items:center; }
+  .num { background:var(--accent); color:#fff; width:26px; height:26px; border-radius:50%; display:inline-grid; place-items:center; font-size:.85rem; flex:none; }
+  .chapter ul { margin:6px 0 0; padding-left:20px; color:var(--muted); }
+  .chapter li { margin:3px 0; }
+  .chapter img { width:90px; border-radius:8px; float:right; margin:0 0 8px 12px; border:1px solid var(--line); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Pro Shop Calculator &mdash; वीडियो ट्यूटोरियल</h1>
+    <p>दस छोटे भाग, हिन्दी आवाज़ और हिन्दी सबटाइटल के साथ। सभी चलाएँ दबाएँ या कोई भाग चुनें।</p>
+  </div>
+  <a class="lang" href="../" hreflang="en" lang="en">English</a>
+</header>
+<main>
+  <section class="stage">
+    <video id="v" controls playsinline preload="metadata"></video>
+    <div class="controls">
+      <button class="primary" id="playAll">&#9654; सभी चलाएँ</button>
+      <button id="prev">&laquo; पिछला</button>
+      <button id="next">अगला &raquo;</button>
+    </div>
+    <div class="now" id="now">शुरू करने के लिए कोई भाग चुनें।</div>
+  </section>
+  <ol class="chapters" id="list"></ol>
+</main>
+<script>
+const parts = [
+  { title:"मात्रा &times; दर, +/- और एडिट विकल्प",
+    steps:["मात्रा लिखें, फिर दर लिखें और ENTER दबाएँ &mdash; पंक्ति में मात्रा &times; दर = राशि दिखती है।",
+           "सिर्फ़ मात्रा लिखकर ENTER दबाने पर दर 1 मानी जाती है।",
+           "&plusmn; बटन लिखी जा रही संख्या का चिह्न बदलता है (वापसी, छूट)।",
+           "किसी पंक्ति को देर तक दबाएँ: Edit, Insert Up, Delete, Load Data, Back।",
+           "मान लिखकर पंक्ति पर टैप करें: Insert Up, Delete Row या Edit Row।"] },
+  { title:"विवरण, मात्रा &times; दर और Qty / Desc बटन",
+    steps:["हेडर का चिप तय करता है कि ENTER के बाद कर्सर कहाँ जाए (लाल बिंदु = Quantity)।",
+           "Description चुनें, मात्रा और दर लिखें, ENTER दबाएँ, फिर वस्तु का नाम लिखें।",
+           "चिप दोबारा दबाकर Quantity मोड में लौटें।"] },
+  { title:"नई फ़ाइल (New)",
+    steps:["New दबाएँ, कुल राशि शून्य के साथ नई फ़ाइल खुलती है।",
+           "पुराना काम Files में सुरक्षित रहता है।"] },
+  { title:"फ़ाइल खोलना (Open)",
+    steps:["फ़ाइलें दिन के हिसाब से और कुल राशि के साथ दिखती हैं।",
+           "ऊपर दाईं ओर के तीर से सभी दिन समेटें या फैलाएँ।",
+           "राशि, इनवॉइस नंबर या ग्राहक के नाम से खोजें।",
+           "फ़ाइल पर टैप करके उसे वापस खोलें।"] },
+  { title:"More &mdash; हिसाब के अतिरिक्त बटन",
+    steps:["More में ( ) + &minus; &times; &divide; ^ &radic; और % के बटन मिलते हैं।",
+           "(2+3)*5 जैसा सूत्र लिखकर ENTER दबाएँ, पंक्ति में उत्तर दिखता है।",
+           "इस्तेमाल के बाद बटन बंद हो जाते हैं; ज़रूरत पर फिर More दबाएँ।"] },
+  { title:"सेटिंग्स (1/2)",
+    steps:["Tone से की-प्रेस की आवाज़ चुनें; स्पीकर आइकन से म्यूट करें।",
+           "सूची से भाषा चुनें।",
+           "कंपनी का नाम, पता और GST नंबर इनवॉइस पर दिखते हैं।"] },
+  { title:"सेटिंग्स (2/2)",
+    steps:["ग्राहक का नाम, पता और खरीदार का GST नंबर।",
+           "इनवॉइस का प्रीफ़िक्स और सफ़िक्स, अगले नंबर के उदाहरण के साथ।",
+           "Invoice / Estimate डिफ़ॉल्ट और क्रिप्टो सीक्रेट डिजिट (आँख आइकन से दिखाएँ या छिपाएँ)।",
+           "ऊपर दाईं ओर Save दबाएँ।"] },
+  { title:"GST / PDF &mdash; कर, HSN, तारीख, ग्राहक, इनवॉइस नंबर",
+    steps:["GST-/+ : कर शामिल या अलग। IGST/CGST : अंतर्राज्यीय या बँटा हुआ कर।",
+           "पंक्ति पर टैप करके 0%, 5%, 12%, 18% या अपनी दर चुनें; All सभी पंक्तियों पर लगाता है।",
+           "विवरण वाली पंक्तियों में HSN/SAC का बॉक्स होता है।",
+           "इनवॉइस नंबर बदलें, तारीख चुनें और ग्राहक का नाम भरें।"] },
+  { title:"Invoice / Estimate, Share और Preview",
+    steps:["Invoice और Estimate के बीच बदलें।",
+           "Share invoice: PDF शेयर करें, या पहले Preview देखें।"] },
+  { title:"Crypt",
+    steps:["ENTER RATE में दर लिखें, उसका गुप्त कोड मिलता है।",
+           "SECRET CODE में कोड लिखें या पेस्ट करें, दर वापस मिलती है।",
+           "कॉपी आइकन से कोई भी मान कॉपी करें।"] }
+];
+const base = "parts/part", v = document.getElementById('v'), now = document.getElementById('now'), list = document.getElementById('list');
+const pad = n => String(n + 1).padStart(2, '0');
+let cur = -1, auto = false;
+parts.forEach((p, i) => {
+  const li = document.createElement('li'); li.className = 'chapter'; li.id = 'c' + i;
+  li.innerHTML = '<img src="' + base + pad(i) + '.jpg" alt="" loading="lazy"><h2><span class="num">' + (i + 1) + '</span>' + p.title + '</h2><ul>' + p.steps.map(s => '<li>' + s + '</li>').join('') + '</ul>';
+  li.onclick = () => { auto = false; load(i, true); };
+  list.appendChild(li);
+});
+function load(i, play) {
+  if (i < 0 || i >= parts.length) return;
+  cur = i; v.poster = base + pad(i) + '.jpg'; v.src = base + pad(i) + '.mp4';
+  now.innerHTML = 'भाग ' + (i + 1) + ' / ' + parts.length + ' &mdash; ' + parts[i].title;
+  document.querySelectorAll('.chapter').forEach((e, k) => e.classList.toggle('active', k === i));
+  document.getElementById('c' + i).scrollIntoView({ block:'nearest', behavior:'smooth' });
+  if (play) v.play().catch(() => {});
+}
+v.addEventListener('ended', () => { if (auto && cur < parts.length - 1) load(cur + 1, true); });
+document.getElementById('playAll').onclick = () => { auto = true; load(0, true); };
+document.getElementById('prev').onclick = () => load(cur - 1, true);
+document.getElementById('next').onclick = () => load(cur + 1, true);
+load(0, false);
+</script>
+</body>
+</html>
