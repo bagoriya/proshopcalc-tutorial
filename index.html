@@ -34,6 +34,8 @@
   button:hover { border-color:var(--accent); }
   button.primary { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:var(--ink); border-color:transparent; box-shadow:0 8px 20px rgba(255,122,26,.4); font-size:1.05rem; }
   .now { margin-top:10px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px 14px; font-weight:700; }
+  .auto { grid-column:1/-1; display:flex; align-items:center; gap:10px; color:var(--muted); font-weight:600; min-height:40px; cursor:pointer; }
+  .auto input { width:22px; height:22px; accent-color:var(--accent); }
   ol.chapters { list-style:none; margin:0; padding:0; display:grid; gap:12px; }
   .chapter { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:14px 16px; cursor:pointer; overflow:hidden; transition:transform .15s, box-shadow .15s; }
   .chapter:active { transform:scale(.99); }
@@ -71,6 +73,7 @@
       <button class="primary" id="playAll">&#9654; Play all</button>
       <button id="prev">&laquo; Prev</button>
       <button id="next">Next &raquo;</button>
+      <label class="auto"><input type="checkbox" id="autoNext" checked> Auto-play next part</label>
     </div>
     <div class="now" id="now">Pick a part to start.</div>
   </section>
@@ -124,11 +127,12 @@ const parts = [
 ];
 const base = "parts/part", v = document.getElementById('v'), now = document.getElementById('now'), list = document.getElementById('list');
 const pad = n => String(n + 1).padStart(2, '0');
-let cur = -1, auto = false;
+let cur = -1;
+const autoEl = document.getElementById('autoNext');
 parts.forEach((p, i) => {
   const li = document.createElement('li'); li.className = 'chapter'; li.id = 'c' + i;
   li.innerHTML = '<img src="' + base + pad(i) + '.jpg" alt="" loading="lazy"><h2><span class="num">' + (i + 1) + '</span>' + p.title + '</h2><ul>' + p.steps.map(s => '<li>' + s + '</li>').join('') + '</ul>';
-  li.onclick = () => { auto = false; load(i, true); if (innerWidth <= 760) document.querySelector('.stage').scrollIntoView({ behavior:'smooth', block:'start' }); };
+  li.onclick = () => { load(i, true); if (innerWidth <= 760) document.querySelector('.stage').scrollIntoView({ behavior:'smooth', block:'start' }); };
   list.appendChild(li);
 });
 function load(i, play) {
@@ -139,8 +143,8 @@ function load(i, play) {
   document.getElementById('c' + i).scrollIntoView({ block:'nearest', behavior:'smooth' });
   if (play) v.play().catch(() => {});
 }
-v.addEventListener('ended', () => { if (auto && cur < parts.length - 1) load(cur + 1, true); });
-document.getElementById('playAll').onclick = () => { auto = true; load(0, true); };
+v.addEventListener('ended', () => { if (autoEl.checked && cur < parts.length - 1) load(cur + 1, true); });
+document.getElementById('playAll').onclick = () => { autoEl.checked = true; load(0, true); };
 document.getElementById('prev').onclick = () => load(cur - 1, true);
 document.getElementById('next').onclick = () => load(cur + 1, true);
 load(0, false);
