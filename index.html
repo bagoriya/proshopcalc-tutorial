@@ -60,7 +60,7 @@
 </head>
 <body>
 <header class="top wrap">
-  <div class="brand"><span class="logo">&#129518;</span><div><h1>Pro Shop Calculator</h1><p>Video tutorial &middot; 10 short parts with voice and subtitles</p></div></div>
+  <div class="brand"><span class="logo">&#129518;</span><div><h1>Pro Shop Calculator</h1><p>Video tutorial &middot; 11 short parts with voice and subtitles</p></div></div>
   <nav class="langs" aria-label="Language">
     <a class="seg active" href="./" hreflang="en" lang="en" aria-current="page">English</a>
     <a class="seg" href="hi/" hreflang="hi" lang="hi">&#2361;&#2367;&#2344;&#2381;&#2342;&#2368; <small>HINDI</small></a>
@@ -81,12 +81,16 @@
 </main>
 <script>
 const parts = [
-  { title:"Quantity &times; Rate, +/- and edit options",
+  { title:"Quantity &times; Rate and +/-",
     steps:["Type a quantity, then a rate, then press ENTER &mdash; the row shows qty &times; rate = amount.",
-           "Only a quantity + ENTER: the rate is taken as 1.",
            "&plusmn; flips the sign of what you are typing (returns, discounts).",
-           "Long-press a row: Edit, Insert Up, Delete, Load Data, Back.",
-           "Type a value and tap a row to Insert Up, Delete Row or Edit Row."] },
+           "Only a quantity + ENTER: the rate is taken as 1."] },
+  { title:"Edit a row, scroll, Undo and reorder",
+    steps:["Swipe to scroll the list.",
+           "Tap a row to edit it: a dark border marks it and it moves above the keypad so its buttons stay visible. Scrolled away? Tap Quantity or Rate and the row comes back.",
+           "Delete shows &ldquo;Row deleted&rdquo; with Undo &mdash; tap Undo to bring the row back in its place.",
+           "Edits can be undone too: after Edit, tap Undo to restore the old values.",
+           "Press and hold a row, then drag it up or down to change the order."] },
   { title:"Description, Quantity &times; Rate and the Qty / Desc button",
     steps:["The header chip chooses where the cursor goes after ENTER (red dot = Quantity).",
            "Switch it to Description, enter qty and rate, press ENTER, then type the item name.",
